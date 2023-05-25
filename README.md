@@ -1,13 +1,13 @@
 <h1 align="center">🏹 archery-timer 🔇</h1>
-<img align="right" src="https://img.shields.io/github/package-json/v/0xTheOldOne/breath?style=for-the-badge" />
-<img align="right" src="https://img.shields.io/github/languages/code-size/0xTheOldOne/breath?style=for-the-badge" />
-<img align="right" src="https://img.shields.io/github/last-commit/0xTheOldOne/breath?style=for-the-badge" />
+<img align="right" src="https://img.shields.io/github/package-json/v/0xTheOldOne/archery-timer?style=for-the-badge" />
+<img align="right" src="https://img.shields.io/github/languages/code-size/0xTheOldOne/archery-timer?style=for-the-badge" />
+<img align="right" src="https://img.shields.io/github/last-commit/0xTheOldOne/archery-timer?style=for-the-badge" />
 
 <div class="mb-5">&nbsp;</div>
 
 <h3 >Description</h3>
 <div>
-  <img align="right" src="https://github-readme-stats.vercel.app/api/pin/?username=0xTheOldOne&repo=breath" />
+  <img align="right" src="https://github-readme-stats.vercel.app/api/pin/?username=0xTheOldOne&repo=archery-timer" />
   <p>This app is made with VueJS and is meant to be a simple archery timer for those who want to shoot with a match timer</p>
 </div>
 
