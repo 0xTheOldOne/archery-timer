@@ -22,20 +22,24 @@
   <div class="timer end" v-else>{{ endPhase }}</div>
 
   <div class="commands" v-if="currentPhase != endPhase">
-    <span
-      class="command material-symbols-outlined"
-      @click="startTimer"
-      v-if="timer <= 0"
-    >
-      play_circle
-    </span>
-    <span
-      class="command material-symbols-outlined red"
-      @click="stopTimer"
-      v-else
-    >
-      stop_circle
-    </span>
+    <div>
+      <span
+        class="command material-symbols-outlined"
+        @click="startTimer"
+        v-if="timer <= 0"
+      >
+        play_circle
+      </span>
+    </div>
+    <div>
+      <span
+        class="command material-symbols-outlined red"
+        @click="stopTimer"
+        v-if="timer > 0"
+      >
+        stop_circle
+      </span>
+    </div>
   </div>
 </template>
 
@@ -208,7 +212,7 @@ export default defineComponent({
 
 .commands {
   bottom: 0;
-  justify-content: center;
+  justify-content: space-between;
 
   .command {
     @size: 3rem;
@@ -239,9 +243,12 @@ export default defineComponent({
 }
 
 @media (orientation: landscape) {
-  .settings,
+  .settings {
+    padding: 0.75rem;
+  }
+
   .commands {
-    padding: 0.25rem;
+    padding: 0rem;
   }
 
   .commands {
@@ -256,7 +263,7 @@ export default defineComponent({
     font-size: 5rem;
 
     &:not(.end) {
-      font-size: 10rem;
+      font-size: 7rem;
     }
   }
 }
