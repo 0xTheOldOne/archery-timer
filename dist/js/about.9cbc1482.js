@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkarchery_timer"]=self["webpackChunkarchery_timer"]||[]).push([[443],{242:function(r,e,n){n.r(e),n.d(e,{default:function(){return f}});var t=n(252);const a={class:"about"},u=(0,t._)("h1",null,"This is an about page",-1),c=[u];function s(r,e){return(0,t.wg)(),(0,t.iD)("div",a,c)}var i=n(744);const h={},o=(0,i.Z)(h,[["render",s]]);var f=o}}]);
+//# sourceMappingURL=about.9cbc1482.js.map

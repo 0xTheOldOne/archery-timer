@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "commit": "git add . && git commit -m \"deploy\"",
+    "push": "git push origin",
+    "deploy": "npm run build && npm run commit && npm run push && git subtree push --prefix dist origin gh-pages"
   },
   "dependencies": {
     "vue": "^3.2.13",
