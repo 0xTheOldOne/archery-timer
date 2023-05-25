@@ -10,7 +10,8 @@
     "deploy": "npm run build && npm run commit && npm run push && git subtree push --prefix dist origin gh-pages"
   },
   "dependencies": {
-    "vue": "^3.2.13",
+    "bootstrap": "^5.2.3",
+    "vue": "^3.3.4",
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0"
