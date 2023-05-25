@@ -14,7 +14,7 @@ html {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background-color: @background-color;
+  background-color: @background-color !important;
 
   #app {
     position: absolute;
@@ -31,6 +31,12 @@ html {
     display: flex;
     justify-content: center;
     flex-direction: column;
+
+    @media screen and (min-width: 800px) {
+      width: 800px;
+      margin: 0 auto;
+      position: relative;
+    }
   }
 }
 </style>

@@ -11,15 +11,37 @@
         <option value="240">4 minutes</option>
       </select>
     </div>
+    <div class="phase" v-else-if="currentPhase == preparationPhase">
+      {{ currentPhase }}
+    </div>
     <div class="phase" v-else-if="currentPhase != endPhase">
       {{ currentPhase }}
     </div>
   </div>
 
-  <div class="timer" :class="timerClass" v-if="currentPhase != endPhase">
-    {{ formatTime(timer) }}
-  </div>
-  <div class="timer end" v-else>{{ endPhase }}</div>
+  <Transition
+    name="custom-classes"
+    enter-active-class="animate__animated animate__bounceInLeft"
+    leave-active-class="animate__animated animate__bounceOutRight"
+  >
+    <div
+      class="timer"
+      :class="timerClass"
+      v-if="currentPhase == preparationPhase || currentPhase == ''"
+    >
+      {{ formatTime(timer) }}
+    </div>
+    <div
+      class="timer"
+      :class="timerClass"
+      v-else-if="currentPhase == shootingPhase"
+    >
+      {{ formatTime(timer) }}
+    </div>
+    <div class="timer end" v-else-if="currentPhase == endPhase">
+      {{ endPhase }}
+    </div>
+  </Transition>
 
   <div class="commands" v-if="currentPhase != endPhase">
     <div>
@@ -192,7 +214,7 @@ export default defineComponent({
   font-size: 1.2rem;
 
   > div {
-    width: 50%;
+    max-width: 50%;
 
     label {
       margin-right: 1rem;
@@ -203,7 +225,7 @@ export default defineComponent({
     }
 
     &.phase {
-      width: 100%;
+      min-width: 100%;
       font-size: 3rem;
       text-align: center;
     }
@@ -212,7 +234,6 @@ export default defineComponent({
 
 .commands {
   bottom: 0;
-  justify-content: space-between;
 
   .command {
     @size: 3rem;
@@ -226,6 +247,7 @@ export default defineComponent({
   align-self: center;
   justify-self: center;
   font-weight: bold;
+  position: absolute;
 
   &:not(.end) {
     font-family: "Roboto Mono", monospace;
@@ -252,6 +274,8 @@ export default defineComponent({
   }
 
   .commands {
+    justify-content: space-between;
+
     .command {
       @size: 5rem;
       font-size: @size;
@@ -281,6 +305,8 @@ export default defineComponent({
   }
 
   .commands {
+    justify-content: center;
+
     .command {
       @size: 5rem;
       font-size: @size;
@@ -294,6 +320,21 @@ export default defineComponent({
     &:not(.end) {
       font-size: 6rem;
     }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .settings {
+    top: 10rem;
+
+    > div {
+      width: 100%;
+    }
+  }
+  .commands {
+    max-width: 50%;
+    margin: 0 auto;
+    bottom: 10rem;
   }
 }
 </style>
