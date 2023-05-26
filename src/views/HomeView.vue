@@ -1,14 +1,15 @@
 <template>
   <div class="settings">
     <div v-if="timer <= 0 && currentPhase != endPhase">
-      <label for="duration">Shooting duration :</label>
+      <label for="duration">{{ $t("duration.label") }} :</label>
       <select v-model="duration">
-        <option value="30">30 seconds</option>
-        <option value="60">60 seconds</option>
-        <option value="90">1 minute and 30 seconds</option>
-        <option value="120">2 minutes</option>
-        <option value="180">3 minutes</option>
-        <option value="240">4 minutes</option>
+        <option value="20">{{ $t("duration.20") }}</option>
+        <option value="30">{{ $t("duration.30") }}</option>
+        <option value="60">{{ $t("duration.60") }}</option>
+        <option value="90">{{ $t("duration.90") }}</option>
+        <option value="120">{{ $t("duration.120") }}</option>
+        <option value="180">{{ $t("duration.180") }}</option>
+        <option value="240">{{ $t("duration.240") }}</option>
       </select>
     </div>
     <div class="phase" v-else-if="currentPhase == preparationPhase">
@@ -66,7 +67,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
+import { useI18n } from "vue-i18n";
+import { getSupportedLocales } from "../locales/helper";
+import { getBrowserLocale } from "../locales/helper";
+
 const prepare = require("@/assets/sounds/prepare.mp3");
 const bip = require("@/assets/sounds/bip.mp3");
 
@@ -79,13 +84,33 @@ export default defineComponent({
       duration: 120 as number,
       preparation: 10 as number,
       currentPhase: "" as string,
-      preparationPhase: "💪 Ready ? Prepare...",
-      shootingPhase: "🏹 Shoot !",
-      endPhase: "👏 It's over !",
       intervalId: undefined as number | undefined,
       lastPlayedSound: undefined as HTMLAudioElement | undefined,
       prepareSound: undefined as HTMLAudioElement | undefined,
       bipSound: undefined as HTMLAudioElement | undefined,
+      locales: getSupportedLocales(),
+      browserLocale: getBrowserLocale({ countryCodeOnly: true }),
+    };
+  },
+  setup() {
+    const { t } = useI18n();
+
+    const preparationPhase = computed(() => {
+      return t("phase.prepare");
+    });
+
+    const shootingPhase = computed(() => {
+      return t("phase.shoot");
+    });
+
+    const endPhase = computed(() => {
+      return t("phase.end");
+    });
+
+    return {
+      preparationPhase,
+      shootingPhase,
+      endPhase,
     };
   },
   computed: {
@@ -108,6 +133,10 @@ export default defineComponent({
   },
   mounted() {
     this.stopTimer();
+
+    if (this.browserLocale) {
+      this.$i18n.locale = this.browserLocale;
+    }
   },
   unmounted() {
     this.stopTimer();
