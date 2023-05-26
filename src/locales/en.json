@@ -1,6 +1,7 @@
 {
   "duration": {
     "label": "Shooting duration",
+    "alert": "Alert",
     "20": "20 seconds",
     "30": "30 seconds",
     "60": "1 minute",

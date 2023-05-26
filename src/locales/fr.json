@@ -1,6 +1,7 @@
 {
   "duration": {
     "label": "Durée de la volée",
+    "alert": "Alerte",
     "20": "20 secondes",
     "30": "30 secondes",
     "60": "1 minute",

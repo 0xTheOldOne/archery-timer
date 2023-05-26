@@ -35,6 +35,9 @@
       v-if="currentPhase == preparationPhase || currentPhase == ''"
     >
       {{ formatTime(timer) }}
+      <span class="alert"
+        >{{ $t("duration.alert") }} : {{ formatTime(hurryUp) }}</span
+      >
     </div>
     <div
       class="timer"
@@ -315,6 +318,14 @@ export default defineComponent({
 
   &:not(.end) {
     font-family: "Roboto Mono", monospace;
+  }
+
+  .alert {
+    position: absolute;
+    right: 0;
+    bottom: -2rem;
+    line-height: 1rem;
+    font-size: 1rem;
   }
 }
 
