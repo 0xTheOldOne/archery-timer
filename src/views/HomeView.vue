@@ -12,10 +12,14 @@
         <option value="240">{{ $t("duration.240") }}</option>
       </select>
     </div>
-    <div class="phase" v-else-if="currentPhase == preparationPhase">
-      {{ currentPhase }}
-    </div>
-    <div class="phase" v-else-if="currentPhase != endPhase">
+    <div
+      class="phase"
+      v-else-if="
+        currentPhase == preparationPhase ||
+        currentPhase == hurryPhase ||
+        currentPhase != endPhase
+      "
+    >
       {{ currentPhase }}
     </div>
   </div>
@@ -35,7 +39,7 @@
     <div
       class="timer"
       :class="timerClass"
-      v-else-if="currentPhase == shootingPhase"
+      v-else-if="currentPhase == shootingPhase || currentPhase == hurryPhase"
     >
       {{ formatTime(timer) }}
     </div>
@@ -72,8 +76,9 @@ import { useI18n } from "vue-i18n";
 import { getSupportedLocales } from "../locales/helper";
 import { getBrowserLocale } from "../locales/helper";
 
-const prepare = require("@/assets/sounds/prepare.mp3");
-const bip = require("@/assets/sounds/bip.mp3");
+const bip1 = require("@/assets/sounds/bip-1.mp3");
+const bip2 = require("@/assets/sounds/bip-2.mp3");
+const bip3 = require("@/assets/sounds/bip-3.mp3");
 
 export default defineComponent({
   name: "HomeView",
@@ -86,8 +91,9 @@ export default defineComponent({
       currentPhase: "" as string,
       intervalId: undefined as number | undefined,
       lastPlayedSound: undefined as HTMLAudioElement | undefined,
-      prepareSound: undefined as HTMLAudioElement | undefined,
-      bipSound: undefined as HTMLAudioElement | undefined,
+      bip1Sound: undefined as HTMLAudioElement | undefined,
+      bip2Sound: undefined as HTMLAudioElement | undefined,
+      bip3Sound: undefined as HTMLAudioElement | undefined,
       locales: getSupportedLocales(),
       browserLocale: getBrowserLocale({ countryCodeOnly: true }),
     };
@@ -103,6 +109,10 @@ export default defineComponent({
       return t("phase.shoot");
     });
 
+    const hurryPhase = computed(() => {
+      return t("phase.hurry");
+    });
+
     const endPhase = computed(() => {
       return t("phase.end");
     });
@@ -110,17 +120,33 @@ export default defineComponent({
     return {
       preparationPhase,
       shootingPhase,
+      hurryPhase,
       endPhase,
     };
   },
   computed: {
+    hurryUp() {
+      var value = 0;
+
+      if (this.duration > 30) {
+        value = 15;
+      } else if (this.duration > 20) {
+        value = 10;
+      } else {
+        value = 5;
+      }
+
+      return value;
+    },
     timerClass() {
-      if (this.timer <= 10) {
-        if (this.currentPhase == this.preparationPhase) {
-          return "yellow";
-        } else if (this.currentPhase == this.shootingPhase) {
-          return "red";
-        }
+      if (
+        (this.currentPhase == this.shootingPhase ||
+          this.currentPhase == this.hurryPhase) &&
+        this.timer <= this.hurryUp
+      ) {
+        return "red";
+      } else if (this.currentPhase == this.preparationPhase) {
+        return "yellow";
       }
 
       return "";
@@ -128,8 +154,9 @@ export default defineComponent({
   },
   created() {
     this.stopTimer();
-    this.prepareSound = new Audio(prepare);
-    this.bipSound = new Audio(bip);
+    this.bip1Sound = new Audio(bip1);
+    this.bip2Sound = new Audio(bip2);
+    this.bip3Sound = new Audio(bip3);
   },
   mounted() {
     this.stopTimer();
@@ -179,7 +206,7 @@ export default defineComponent({
       this.timer = 10;
       this.currentPhase = this.preparationPhase;
 
-      this.playSound(this.prepareSound);
+      this.playSound(this.bip3Sound);
       this.intervalId = setInterval(() => {
         if (this.timer) {
           this.timer--;
@@ -195,13 +222,21 @@ export default defineComponent({
         this.timer = this.duration;
         this.currentPhase = this.shootingPhase;
 
-        this.playSound(this.bipSound);
+        this.playSound(this.bip1Sound);
         this.intervalId = setInterval(() => {
           if (this.timer) {
             this.timer--;
+
+            // Hurry up ?
+            if (this.timer === this.hurryUp) {
+              this.currentPhase = this.hurryPhase;
+              this.playSound(this.bip2Sound);
+            }
+
+            // End of shooting
             if (this.timer === 0) {
               this.stopTimer();
-              this.playSound(this.prepareSound);
+              this.playSound(this.bip3Sound);
               this.startEndTimer();
             }
           }
@@ -243,7 +278,7 @@ export default defineComponent({
   font-size: 1.2rem;
 
   > div {
-    max-width: 50%;
+    max-width: 75%;
 
     label {
       margin-right: 1rem;

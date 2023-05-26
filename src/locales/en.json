@@ -10,8 +10,9 @@
     "240": "4 minutes"
   },
   "phase": {
-    "prepare": "💪 Ready ? Prepare...",
+    "prepare": "💪 Ready ?...",
     "shoot": "🏹 Shoot !",
+    "hurry": "⏳ Soon !",
     "end": "👏 It's over !"
   }
 }
